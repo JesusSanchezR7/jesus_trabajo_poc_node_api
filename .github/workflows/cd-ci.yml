@@ -1,7 +1,7 @@
 name: CD-CI
 
-env:
-  AZURE_WEBAPP_NAME: "jesusmanuelsanchezpop"
+#env:
+#  AZURE_WEBAPP_NAME: "jesusmanuelsanchezpop"
 
 on:
   push:
@@ -31,9 +31,6 @@ jobs:
 
       - name: run  unit and integration test
         run: npm run test 
-
-      - name: run code laster
-        run: npm run last 
       
   build: 
     run-on: ubuntu-latest
@@ -63,10 +60,10 @@ jobs:
     needs: build
 
     steps:
-      - name: checkout
+      - name: Checkout
         uses: action/checkout@4
 
-      - name: login to azure
+      - name: Login  Azure
         uses: azure/login@v3
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }} 
