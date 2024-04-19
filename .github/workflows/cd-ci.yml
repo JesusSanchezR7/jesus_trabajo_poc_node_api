@@ -1,8 +1,5 @@
 name: CD-CI
 
-#env:
-#  AZURE_WEBAPP_NAME: "jesusmanuelsanchezpop"
-
 on:
   push:
     branches:
@@ -13,7 +10,8 @@ on:
       - develop
       - main
 
-jobs:
+#--- test
+jobs:  
   test:
     runs-on: ubuntu-latest
 
@@ -31,14 +29,15 @@ jobs:
 
       - name: run  unit and integration test
         run: npm run test 
-      
+
+#--- build      
   build: 
     run-on: ubuntu-latest
     steps:
-      
+    
       - name: checkout
         uses: actions/checkout@v4
-      
+
       - name: Login to Docker Hub
           uses: docker/login-action@v3
           with:
@@ -53,7 +52,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true 
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/jesusmanuelsanchezpop:latest  
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:latest  
   
   deploys:
     runs-on: ubuntu-lastest 
@@ -74,6 +73,6 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} 
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/API-POC=LASTEST
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:latest
 
 
